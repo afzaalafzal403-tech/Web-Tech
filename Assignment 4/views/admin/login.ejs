@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="admin-page">
+  <main class="admin-login-page">
+    <div class="admin-card auth-card">
+      <h1>Admin Login</h1>
+      <p>Enter the admin password to manage products.</p>
+      <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+      <form method="POST" action="/admin/login" class="admin-form">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Admin password" required>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
