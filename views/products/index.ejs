@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TailorPro Catalog</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .flash-messages {
+      padding: 0 20px;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-error {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-info {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .auth-nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .auth-nav a {
+      color: #0066cc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .user-welcome {
+      color: #333;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <div class="auth-nav">
+          <% if (user) { %>
+            <span class="user-welcome">Welcome, <%= user.name %>!</span>
+            <a href="/profile">My Profile</a>
+            <a href="/checkout">Checkout</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin/dashboard">Admin Panel</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/admin/login">Admin Login</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="order-summary">Orders: 0</div>
+    </div>
+  </div>
+
+  <!-- Flash Messages Section -->
+  <% if (messages.error.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.error.forEach(msg => { %>
+        <div class="alert alert-error show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <% if (messages.success.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.success.forEach(msg => { %>
+        <div class="alert alert-success show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <% if (messages.info.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.info.forEach(msg => { %>
+        <div class="alert alert-info show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <header class="site-header">
+    <div class="container header-top">
+      <a class="logo" href="/products">TailorPro</a>
+      <nav class="site-nav">
+        <a href="/products">Home</a>
+        <a href="#catalog">Catalog</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">Tailoring made digital</p>
+          <h1>Browse custom garments and manage your tailoring order in one place.</h1>
+          <p class="hero-text">TailorPro helps you choose products, compare options, and place smart tailoring requests with accurate pricing and delivery planning.</p>
+          <a href="#catalog" class="btn btn-primary">View Tailor Catalog</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalog" class="section catalog-section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>TailorPro Catalog</h2>
+            <p>Search, filter, and paginate through tailoring products and service bundles.</p>
+          </div>
+        </div>
+
+        <form method="GET" action="/products" class="filter-panel">
+          <div class="filter-group">
+            <label for="search">Search products or services</label>
+            <input id="search" type="text" name="search" placeholder="Enter product name, garment type, or service" value="<%= search %>">
+          </div>
+          <div class="filter-group">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+              <option value="">All Categories</option>
+              <% categories.forEach(cat => { %>
+                <option value="<%= cat %>" <%= category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="filter-range">
+            <div class="filter-group">
+              <label for="minPrice">Min Price</label>
+              <input id="minPrice" type="number" name="minPrice" placeholder="0" value="<%= minPrice %>">
+            </div>
+            <div class="filter-group">
+              <label for="maxPrice">Max Price</label>
+              <input id="maxPrice" type="number" name="maxPrice" placeholder="500" value="<%= maxPrice %>">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Apply Filters</button>
+        </form>
+
+        <div class="products">
+          <% if (products.length === 0) { %>
+            <div class="empty-state">No products match your filters. Try a broader query or clear the form.</div>
+          <% } %>
+          <% products.forEach(product => { %>
+            <article class="product-card">
+              <img class="product-image" src="<%= product.image || '/uploads/default-product.svg' %>" alt="<%= product.name %>" onerror="this.onerror=null;this.src='/uploads/default-product.svg'">
+              <span class="product-badge"><%= product.category %></span>
+              <h3><%= product.name %></h3>
+              <p class="product-price">$<%= product.price.toFixed(2) %></p>
+              <p class="product-meta">Rating <strong><%= product.rating %>/5</strong> · Stock <strong><%= product.stock %></strong></p>
+              <p class="product-description">Custom tailored garment with accurate measurement tracking and delivery planning.</p>
+            </article>
+          <% }) %>
+        </div>
+
+        <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a class="page-link" href="?page=<%= currentPage - 1 %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>">Previous</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a class="page-link <%= i === currentPage ? 'active' : '' %>" href="?page=<%= i %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a class="page-link" href="?page=<%= currentPage + 1 %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>">Next</a>
+          <% } %>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section features-section">
+      <div class="container grid-4">
+        <div class="feature-card">
+          <h3>Order Tracking</h3>
+          <p>Monitor measurements, fittings, and production milestones for every tailoring order.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Measurement Vault</h3>
+          <p>Store customer measurements for repeat tailoring and faster future orders.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Service Notes</h3>
+          <p>Add fabric, style, and fit notes to each product for more accurate tailoring.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Express Delivery</h3>
+          <p>Select express tailoring bundles and get updated delivery estimates.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div class="container contact-panel">
+        <div>
+          <h2>Contact TailorPro</h2>
+          <p>Need help placing an order? Email <a href="mailto:support@tailorpro.com">support@tailorpro.com</a> or call +92 300 1234567.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

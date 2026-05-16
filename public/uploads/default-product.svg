@@ -1,0 +1,8 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" rx="24" fill="#f5f5f5"/>
+  <path d="M80 210L145 145L215 210L295 130" stroke="#d9d9d9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="145" cy="120" r="48" fill="#ffffff" stroke="#d9d9d9" stroke-width="14"/>
+  <path d="M190 100L255 100" stroke="#d9d9d9" stroke-width="14" stroke-linecap="round"/>
+  <path d="M190 140L255 140" stroke="#d9d9d9" stroke-width="14" stroke-linecap="round"/>
+  <text x="50%" y="270" text-anchor="middle" fill="#a3a3a3" font-family="Segoe UI, sans-serif" font-size="20">No image yet</text>
+</svg>
