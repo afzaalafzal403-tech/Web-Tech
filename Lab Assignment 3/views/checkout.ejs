@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .checkout-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+    }
+
+    .checkout-header {
+      margin-bottom: 25px;
+    }
+
+    .checkout-header h1 {
+      margin: 0;
+      color: #222;
+    }
+
+    .checkout-summary {
+      display: grid;
+      gap: 20px;
+    }
+
+    .checkout-card {
+      padding: 20px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+    }
+
+    .checkout-card h2 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .checkout-card p {
+      margin: 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .checkout-actions {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .checkout-actions a {
+      display: inline-block;
+      padding: 12px 22px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    .checkout-actions a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <div class="auth-nav">
+          <% if (user) { %>
+            <span class="user-welcome">Welcome, <%= user.name %>!</span>
+            <a href="/profile">My Profile</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin/dashboard">Admin Panel</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="order-summary">Orders: 0</div>
+    </div>
+  </div>
+
+  <main class="checkout-container">
+    <header class="checkout-header">
+      <h1>Checkout</h1>
+      <p>Only logged-in customers can access this page. Admins are redirected to the admin panel.</p>
+    </header>
+
+    <div class="checkout-summary">
+      <div class="checkout-card">
+        <h2>Your Account</h2>
+        <p>Name: <strong><%= user.name %></strong></p>
+        <p>Email: <strong><%= user.email %></strong></p>
+        <p>Role: <strong><%= user.role %></strong></p>
+      </div>
+      <div class="checkout-card">
+        <h2>Order Details</h2>
+        <p>This is a protected checkout placeholder page. Implement your actual checkout workflow from here.</p>
+      </div>
+    </div>
+
+    <div class="checkout-actions">
+      <a href="/products">Continue Shopping</a>
+    </div>
+  </main>
+</body>
+</html>
