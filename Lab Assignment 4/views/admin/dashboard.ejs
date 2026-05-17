@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="admin-page">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">TailorPro Admin</div>
+      <nav>
+        <a href="/admin/dashboard" class="active">Dashboard</a>
+        <a href="/admin/orders">Orders</a>
+        <a href="/admin/products/new">Add Product</a>
+        <a href="/admin/logout">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>Product Inventory</h1>
+        <p>Manage product details, stock levels, categories, and images.</p>
+      </header>
+
+      <div class="admin-panel">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (products.length === 0) { %>
+              <tr>
+                <td colspan="7" class="empty-state">No products available. Add a new product to begin.</td>
+              </tr>
+            <% } else { %>
+              <% products.forEach(product => { %>
+                <tr>
+                  <td><img class="admin-thumb" src="<%= product.image || '/uploads/default-product.svg' %>" alt="<%= product.name %>" onerror="this.onerror=null;this.src='/uploads/default-product.svg'"></td>
+                  <td><%= product.name %></td>
+                  <td><%= product.category %></td>
+                  <td>$<%= product.price.toFixed(2) %></td>
+                  <td><%= product.stock %></td>
+                  <td><%= product.rating %>/5</td>
+                  <td class="table-actions">
+                    <a class="btn btn-secondary btn-small" href="/admin/products/<%= product._id %>/edit">Edit</a>
+                    <form method="POST" action="/admin/products/<%= product._id %>?_method=DELETE" class="inline-form" onsubmit="return confirm('Delete this product? This action cannot be undone.');">
+                      <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <div class="auth-nav">
+          <% if (user) { %>
+            <span class="user-welcome">Welcome, <%= user.name %>!</span>
+            <a href="/profile">My Profile</a>
+            <a href="/cart">Cart (<%= totalQty %>)</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin/dashboard">Admin Panel</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="order-summary">Total Items: <%= totalQty %></div>
+    </div>
+  </div>
+
+  <main class="cart-container">
+    <section class="cart-header">
+      <div class="container">
+        <h1>Your Cart</h1>
+        <p>Review your selected tailoring products and continue to checkout when you are ready.</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <% if (cartItems.length === 0) { %>
+        <div class="empty-state">Your cart is empty. Browse the catalog to add products.</div>
+        <a class="btn btn-primary" href="/products">Continue Shopping</a>
+      <% } else { %>
+        <div class="cart-grid">
+          <% cartItems.forEach(item => { %>
+            <div class="cart-item">
+              <img class="cart-thumb" src="<%= item.image || '/uploads/default-product.svg' %>" alt="<%= item.name %>" onerror="this.onerror=null;this.src='/uploads/default-product.svg'">
+              <div class="cart-details">
+                <h2><%= item.name %></h2>
+                <p>Qty: <%= item.quantity %></p>
+                <p>Price: $<%= item.price.toFixed(2) %></p>
+                <p>Subtotal: $<%= (item.price * item.quantity).toFixed(2) %></p>
+              </div>
+              <form method="POST" action="/cart/remove/<%= item.product %>" class="cart-action-form">
+                <button type="submit" class="btn btn-danger btn-small">Remove</button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+
+        <div class="cart-summary">
+          <h2>Order summary</h2>
+          <p>Total items: <strong><%= totalQty %></strong></p>
+          <p>Total price: <strong>$<%= totalPrice.toFixed(2) %></strong></p>
+          <a class="btn btn-primary" href="/checkout">Proceed to Checkout</a>
+          <a class="btn btn-secondary" href="/products">Continue Shopping</a>
+        </div>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

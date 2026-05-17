@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .profile-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .profile-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .profile-field {
+      padding: 15px;
+      background-color: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .profile-field label {
+      display: block;
+      font-weight: 600;
+      color: #666;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .profile-field value {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-customer {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .badge-admin {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .action-links {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .action-links a {
+      display: inline-block;
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .action-links a:hover {
+      background-color: #0056b3;
+    }
+
+    .action-links a.logout {
+      background-color: #dc3545;
+    }
+
+    .action-links a.logout:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <a href="/admin/login">Admin Panel</a>
+      </div>
+      <div class="order-summary">Orders: 0</div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-top">
+      <a class="logo" href="/products">TailorPro</a>
+      <nav class="site-nav">
+        <a href="/products">Home</a>
+        <a href="#catalog">Catalog</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="profile-container">
+    <h1>My Profile</h1>
+
+    <div class="profile-info">
+      <div class="profile-field">
+        <label>Full Name</label>
+        <value><%= user.name %></value>
+      </div>
+
+      <div class="profile-field">
+        <label>Email Address</label>
+        <value><%= user.email %></value>
+      </div>
+
+      <div class="profile-field">
+        <label>Account Type</label>
+        <value>
+          <% if (user.role === 'admin') { %>
+            <span class="badge badge-admin">Admin</span>
+          <% } else { %>
+            <span class="badge badge-customer">Customer</span>
+          <% } %>
+        </value>
+      </div>
+
+      <div class="profile-field">
+        <label>Member Since</label>
+        <value><%= new Date(user.createdAt).toLocaleDateString() %></value>
+      </div>
+    </div>
+
+    <div class="action-links">
+      <a href="/products">Back to Products</a>
+      <% if (user.role !== 'admin') { %>
+        <a href="/orders">My Orders</a>
+      <% } %>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin/dashboard">Admin Dashboard</a>
+      <% } %>
+      <a href="/logout" class="logout">Logout</a>
+    </div>
+  </main>
+</body>
+</html>
