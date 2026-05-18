@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders | TailorPro Admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="admin-page">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">TailorPro Admin</div>
+      <nav>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/orders" class="active">Orders</a>
+        <a href="/admin/products/new">Add Product</a>
+        <a href="/admin/logout">Logout</a>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>Customer Orders</h1>
+        <p>Review orders placed by customers and update their status to Shipped or Cancelled.</p>
+      </header>
+
+      <div class="admin-panel">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Placed At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (orders.length === 0) { %>
+              <tr>
+                <td colspan="6" class="empty-state">No customer orders have been placed yet.</td>
+              </tr>
+            <% } else { %>
+              <% orders.forEach(order => { %>
+                <tr>
+                  <td><%= order._id.toString().slice(-6).toUpperCase() %></td>
+                  <td><%= order.user ? order.user.name : 'Unknown' %> (<%= order.user ? order.user.email : 'No email' %>)</td>
+                  <td>$<%= order.total.toFixed(2) %></td>
+                  <td><span class="badge badge-status <%= order.status.toLowerCase() %>"><%= order.status %></span></td>
+                  <td><%= new Date(order.createdAt).toLocaleString() %></td>
+                  <td class="table-actions">
+                    <form method="POST" action="/admin/orders/<%= order._id %>/status" class="inline-form">
+                      <select name="status" class="form-select">
+                        <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                        <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                      </select>
+                      <button type="submit" class="btn btn-primary btn-small">Update</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

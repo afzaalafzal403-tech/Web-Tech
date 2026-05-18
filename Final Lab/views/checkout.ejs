@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .checkout-page {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .checkout-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .checkout-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .checkout-card h2 {
+      margin-top: 0;
+      color: #222;
+    }
+
+    .checkout-card form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .checkout-card label {
+      font-weight: 600;
+      color: #444;
+    }
+
+    .checkout-card input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .checkout-summary {
+      display: grid;
+      gap: 18px;
+    }
+
+    .checkout-summary .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+    }
+
+    .checkout-summary .summary-row strong {
+      color: #222;
+    }
+
+    .checkout-actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .checkout-actions button,
+    .checkout-actions a {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .checkout-actions a {
+      background: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <div class="auth-nav">
+          <% if (user) { %>
+            <span class="user-welcome">Welcome, <%= user.name %>!</span>
+            <a href="/profile">My Profile</a>
+            <a href="/cart">Cart (<%= cartCount %>)</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin/dashboard">Admin Panel</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="order-summary">Cart items: <%= totalQty %></div>
+    </div>
+  </div>
+
+  <main class="checkout-page">
+    <div class="checkout-grid">
+      <section class="checkout-card">
+        <h2>Shipping details</h2>
+        <% if (cartItems.length === 0) { %>
+          <p>Your cart is empty. Add items to your cart before checking out.</p>
+          <a href="/products">Browse products</a>
+        <% } else { %>
+          <form method="POST" action="/checkout">
+            <div>
+              <label for="address">Address</label>
+              <input id="address" name="address" type="text" required>
+            </div>
+            <div>
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" required>
+            </div>
+            <div>
+              <label for="state">State</label>
+              <input id="state" name="state" type="text" required>
+            </div>
+            <div>
+              <label for="zip">Zip Code</label>
+              <input id="zip" name="zip" type="text" required>
+            </div>
+            <div class="checkout-actions">
+              <button type="submit">Place Order</button>
+              <a href="/cart">Back to Cart</a>
+            </div>
+          </form>
+        <% } %>
+      </section>
+
+      <aside class="checkout-summary">
+        <div class="checkout-card">
+          <h2>Order summary</h2>
+          <div class="summary-row">
+            <span>Items in cart</span>
+            <strong><%= totalQty %></strong>
+          </div>
+          <div class="summary-row">
+            <span>Total amount</span>
+            <strong>$<%= totalPrice.toFixed(2) %></strong>
+          </div>
+        </div>
+
+        <% if (cartItems.length > 0) { %>
+          <div class="checkout-card">
+            <h2>Cart items</h2>
+            <% cartItems.forEach(item => { %>
+              <div class="summary-row">
+                <span><%= item.quantity %> × <%= item.name %></span>
+                <strong>$<%= (item.price * item.quantity).toFixed(2) %></strong>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

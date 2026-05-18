@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .flash-messages {
+      padding: 0 20px;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-error {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-info {
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .auth-nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .auth-nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .user-welcome {
+      color: white;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-links">
+        <span>TailorPro • Digital tailoring orders</span>
+        <div class="auth-nav">
+          <% if (user) { %>
+            <span class="user-welcome">Welcome, <%= user.name %>!</span>
+            <a href="/profile">My Profile</a>
+            <a href="/cart">Cart (<%= cartCount %>)</a>
+            <a href="/checkout">Checkout</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin/dashboard">Admin Panel</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/admin/login">Admin Login</a>
+          <% } %>
+        </div>
+      </div>
+      <div class="order-summary">Cart: <%= cartCount %></div>
+    </div>
+  </div>
+
+  <% if (messages.error.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.error.forEach(msg => { %>
+        <div class="alert alert-error show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <% if (messages.success.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.success.forEach(msg => { %>
+        <div class="alert alert-success show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <% if (messages.info.length > 0) { %>
+    <div class="container flash-messages">
+      <% messages.info.forEach(msg => { %>
+        <div class="alert alert-info show"><%= msg %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <header class="site-header">
+    <div class="container header-top">
+      <a class="logo" href="/products">TailorPro</a>
+      <nav class="site-nav">
+        <a href="/products">Home</a>
+        <a href="/onsale-products">On Sale</a>
+        <a href="/products#catalog">Catalog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <%- body %>
+  </main>
+</body>
+</html>

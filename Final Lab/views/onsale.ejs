@@ -1,0 +1,41 @@
+<section class="section catalog-section onsale-section">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <h1>On Sale Products</h1>
+        <p>Promotional tailoring items — browse all deals with client-side pagination (10 per page).</p>
+      </div>
+    </div>
+
+    <div id="product-list" class="products">
+      <% if (products.length === 0) { %>
+        <div class="empty-state">No products are currently on sale. Check back soon.</div>
+      <% } %>
+      <% products.forEach(product => { %>
+        <article class="product-card">
+          <span class="product-badge sale-badge">On Sale</span>
+          <img class="product-image" src="<%= product.image || '/uploads/default-product.svg' %>" alt="<%= product.name %>" onerror="this.onerror=null;this.src='/uploads/default-product.svg'">
+          <span class="product-badge"><%= product.category %></span>
+          <h3><%= product.name %></h3>
+          <p class="product-price">$<%= product.price.toFixed(2) %></p>
+          <p class="product-meta">Rating <strong><%= product.rating %>/5</strong> · Stock <strong><%= product.stock %></strong></p>
+          <p class="product-description">Limited-time promotional pricing on this tailored garment.</p>
+          <form method="POST" action="/cart/add/<%= product._id %>">
+            <button type="submit" class="btn btn-primary" <%= product.stock <= 0 ? 'disabled' : '' %>><%= product.stock <= 0 ? 'Out of Stock' : 'Add to Cart' %></button>
+          </form>
+        </article>
+      <% }) %>
+    </div>
+
+    <% if (products.length > 0) { %>
+      <div id="pagination-controls" class="client-pagination">
+        <button type="button" id="prev-btn" class="btn btn-secondary page-nav-btn">Previous</button>
+        <span id="page-indicator" class="page-indicator">Page 1 of 1</span>
+        <button type="button" id="next-btn" class="btn btn-secondary page-nav-btn">Next</button>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/onsale-pagination.js"></script>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | TailorPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .admin-login-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+    }
+
+    .auth-card {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .auth-card h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .auth-card p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .admin-form input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .admin-form input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .admin-form button {
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .admin-form button:hover {
+      background-color: #0056b3;
+    }
+
+    .alert {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-error {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="admin-login-page">
+    <div class="auth-card">
+      <h1>Admin Login</h1>
+      <p>Sign in with your admin credentials</p>
+
+      <% if (messages.error.length > 0) { %>
+        <div class="alert alert-error show"><%= messages.error[0] %></div>
+      <% } %>
+
+      <% if (messages.success.length > 0) { %>
+        <div class="alert alert-success show"><%= messages.success[0] %></div>
+      <% } %>
+
+      <form method="POST" action="/admin/login" class="admin-form">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Admin email" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Admin password" required>
+
+        <button type="submit">Admin Login</button>
+      </form>
+
+      <div class="back-link">
+        <a href="/products">Back to Products</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
